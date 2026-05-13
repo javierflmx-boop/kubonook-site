@@ -1,0 +1,1510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kubonook — Modern Backyard Spaces</title>
+<meta name="description" content="Transform your backyard into a private office, guest suite, or income space. Two models: Kubo and Nook. Orlando, FL.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --black: #080808;
+    --charcoal: #111111;
+    --surface: #161616;
+    --border: rgba(201,164,110,0.15);
+    --gold: #C9A46E;
+    --gold-light: #E2C49A;
+    --white: #F5F0EA;
+    --muted: rgba(245,240,234,0.45);
+    --font-display: 'Cormorant Garamond', serif;
+    --font-body: 'Outfit', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 3px; }
+  ::-webkit-scrollbar-track { background: var(--black); }
+  ::-webkit-scrollbar-thumb { background: var(--gold); }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 28px 48px;
+    background: linear-gradient(to bottom, rgba(8,8,8,0.95) 0%, transparent 100%);
+    transition: background 0.4s;
+  }
+  nav.scrolled { background: rgba(8,8,8,0.96); border-bottom: 1px solid var(--border); }
+
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    color: var(--white);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--gold); }
+
+  .nav-links { display: flex; gap: 40px; list-style: none; }
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+
+  .nav-cta {
+    background: transparent;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    padding: 10px 24px;
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+  }
+  .nav-cta:hover { background: var(--gold); color: var(--black); }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    height: 100vh;
+    min-height: 700px;
+    display: flex; align-items: flex-end;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(to top, rgba(8,8,8,1) 0%, rgba(8,8,8,0.3) 50%, rgba(8,8,8,0.1) 100%),
+      url('https://img1.wsimg.com/isteam/ip/ced25438-5c87-44bd-b089-ec92b81fcff1/IMG_9219.jpeg') center/cover no-repeat;
+    transform: scale(1.05);
+    animation: heroZoom 12s ease-out forwards;
+  }
+
+  @keyframes heroZoom {
+    from { transform: scale(1.05); }
+    to { transform: scale(1); }
+  }
+
+  .hero-content {
+    position: relative; z-index: 2;
+    padding: 0 48px 80px;
+    max-width: 800px;
+    animation: heroFadeUp 1.2s ease-out 0.3s both;
+  }
+
+  @keyframes heroFadeUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-eyebrow {
+    font-size: 0.7rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 7vw, 6.5rem);
+    font-weight: 300;
+    line-height: 1.0;
+    margin-bottom: 28px;
+  }
+  .hero-title em { font-style: italic; color: var(--gold-light); }
+
+  .hero-sub {
+    font-size: 0.95rem;
+    line-height: 1.8;
+    color: var(--muted);
+    max-width: 480px;
+    margin-bottom: 48px;
+  }
+
+  .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+
+  .btn-primary {
+    background: var(--gold);
+    color: var(--black);
+    border: none;
+    padding: 16px 36px;
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s;
+  }
+  .btn-primary:hover { background: var(--gold-light); }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--white);
+    border: 1px solid rgba(245,240,234,0.3);
+    padding: 16px 36px;
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s;
+  }
+  .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* ── TICKER ── */
+  .ticker {
+    background: var(--gold);
+    color: var(--black);
+    padding: 12px 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .ticker-inner {
+    display: inline-block;
+    animation: ticker 30s linear infinite;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    font-weight: 400;
+  }
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ── SECTION BASE ── */
+  section { padding: 120px 48px; }
+
+  .section-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 4vw, 3.8rem);
+    font-weight: 300;
+    line-height: 1.1;
+    margin-bottom: 24px;
+  }
+  .section-title em { font-style: italic; }
+
+  /* ── FIRST IMPRESSION ── */
+  .first-impression {
+    background: var(--black);
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .fi-intro {
+    padding: 100px 48px 60px;
+    max-width: 760px;
+  }
+  .fi-intro .section-label { margin-bottom: 20px; }
+  .fi-intro .section-title { margin-bottom: 20px; }
+  .fi-intro p {
+    font-size: 1rem;
+    line-height: 1.9;
+    color: var(--muted);
+    max-width: 560px;
+  }
+
+  /* Cinematic horizontal strip */
+  .fi-strip {
+    display: flex;
+    height: 70vh;
+    min-height: 480px;
+    gap: 3px;
+    overflow: hidden;
+  }
+
+  .fi-panel {
+    position: relative;
+    flex: 1;
+    overflow: hidden;
+    cursor: pointer;
+    transition: flex 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .fi-panel:hover { flex: 3.5; }
+
+  .fi-panel img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    transition: transform 0.8s ease;
+    filter: brightness(0.75);
+  }
+  .fi-panel:hover img {
+    transform: scale(1.04);
+    filter: brightness(1);
+  }
+
+  .fi-label {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 40px 24px 24px;
+    background: linear-gradient(to top, rgba(8,8,8,0.9) 0%, transparent 100%);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    transform: translateY(8px);
+    opacity: 0;
+    transition: all 0.4s ease 0.1s;
+  }
+  .fi-panel:hover .fi-label {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .fi-label-num {
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+  .fi-label-text {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: 300;
+    color: var(--white);
+    line-height: 1.2;
+  }
+  .fi-label-sub {
+    font-size: 0.75rem;
+    color: var(--muted);
+    line-height: 1.6;
+    max-width: 260px;
+  }
+
+  /* Vertical label shown when panel is collapsed */
+  .fi-vert {
+    position: absolute;
+    bottom: 28px; left: 50%;
+    transform: translateX(-50%) rotate(90deg);
+    transform-origin: center;
+    white-space: nowrap;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(245,240,234,0.4);
+    transition: opacity 0.3s;
+  }
+  .fi-panel:hover .fi-vert { opacity: 0; }
+
+  /* Bottom detail row */
+  .fi-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3px;
+    height: 40vh;
+    min-height: 280px;
+  }
+  .fi-row-item {
+    position: relative;
+    overflow: hidden;
+  }
+  .fi-row-item img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s ease, filter 0.4s;
+    filter: brightness(0.7);
+  }
+  .fi-row-item:hover img {
+    transform: scale(1.06);
+    filter: brightness(1);
+  }
+  .fi-row-caption {
+    position: absolute;
+    bottom: 20px; left: 20px;
+    font-size: 0.62rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .fi-row-item:hover .fi-row-caption { opacity: 1; }
+
+  @media (max-width: 900px) {
+    .fi-intro { padding: 80px 24px 40px; }
+    .fi-strip {
+      flex-direction: column;
+      height: auto;
+    }
+    .fi-panel { flex: none; height: 280px; }
+    .fi-panel:hover { flex: none; }
+    .fi-label { opacity: 1; transform: none; }
+    .fi-vert { display: none; }
+    .fi-row { grid-template-columns: 1fr; height: auto; }
+    .fi-row-item { height: 240px; }
+    .fi-row-caption { opacity: 1; }
+  }
+
+  /* ── PHILOSOPHY ── */
+  .philosophy {
+    background: var(--charcoal);
+    padding: 100px 48px;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .philosophy-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 100px;
+    align-items: center;
+  }
+  .philosophy-quote {
+    position: relative;
+  }
+  .philosophy-quote::before {
+    content: '\201C';
+    font-family: var(--font-display);
+    font-size: 12rem;
+    line-height: 0.7;
+    color: var(--gold);
+    opacity: 0.15;
+    position: absolute;
+    top: -10px; left: -20px;
+    pointer-events: none;
+  }
+  .philosophy-quote blockquote {
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 3vw, 2.6rem);
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.35;
+    position: relative; z-index: 1;
+    margin-bottom: 24px;
+  }
+  .philosophy-quote blockquote em { color: var(--gold-light); }
+  .philosophy-quote cite {
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-style: normal;
+  }
+
+  .philosophy-text { }
+  .philosophy-text p {
+    font-size: 0.95rem;
+    line-height: 1.95;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+  .philosophy-text p strong { color: var(--white); font-weight: 400; }
+  .philosophy-text p:last-child { margin-bottom: 0; }
+
+  @media (max-width: 900px) {
+    .philosophy-inner { grid-template-columns: 1fr; gap: 48px; }
+  }
+
+  /* ── ABOUT ── */
+  .about {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .about-text p {
+    font-size: 1rem;
+    line-height: 1.9;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+
+  .about-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+  }
+  .stat {
+    background: var(--surface);
+    padding: 40px 32px;
+    text-align: center;
+  }
+  .stat-num {
+    font-family: var(--font-display);
+    font-size: 3.5rem;
+    font-weight: 300;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .stat-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ── MODELS ── */
+  .models-header {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto 80px;
+  }
+
+  .model-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 600px;
+    margin-bottom: 2px;
+    overflow: hidden;
+  }
+  .model-card.reverse { direction: rtl; }
+  .model-card.reverse > * { direction: ltr; }
+
+  .model-image {
+    position: relative;
+    overflow: hidden;
+  }
+  .model-image img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s ease;
+    display: block;
+  }
+  .model-card:hover .model-image img { transform: scale(1.04); }
+
+  .model-tag {
+    position: absolute;
+    top: 28px; left: 28px;
+    background: var(--gold);
+    color: var(--black);
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+  }
+
+  .model-info {
+    background: var(--surface);
+    padding: 64px 56px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: 1px solid var(--border);
+  }
+
+  .model-name {
+    font-family: var(--font-display);
+    font-size: clamp(2.8rem, 5vw, 4.5rem);
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+    line-height: 1;
+  }
+
+  .model-size {
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 32px;
+  }
+
+  .model-desc {
+    font-size: 0.95rem;
+    line-height: 1.9;
+    color: var(--muted);
+    margin-bottom: 40px;
+  }
+
+  .model-features {
+    list-style: none;
+    margin-bottom: 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .model-features li {
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .model-features li::before {
+    content: '';
+    display: block;
+    width: 20px; height: 1px;
+    background: var(--gold);
+    flex-shrink: 0;
+  }
+
+  .model-price {
+    border-top: 1px solid var(--border);
+    padding-top: 32px;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 32px;
+  }
+  .price-from { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+  .price-num {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    font-weight: 300;
+    color: var(--gold-light);
+  }
+
+  /* ── WHY ── */
+  .why { background: var(--surface); }
+  .why-inner { max-width: 1200px; margin: 0 auto; }
+  .why-header { text-align: center; margin-bottom: 80px; }
+
+  .why-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+  }
+  .why-item {
+    background: var(--charcoal);
+    padding: 52px 40px;
+    transition: background 0.3s;
+  }
+  .why-item:hover { background: var(--surface); }
+
+  .why-icon {
+    width: 40px; height: 40px;
+    margin-bottom: 28px;
+    opacity: 0.8;
+  }
+
+  .why-title {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin-bottom: 16px;
+  }
+  .why-desc {
+    font-size: 0.85rem;
+    line-height: 1.85;
+    color: var(--muted);
+  }
+
+  /* ── PROCESS ── */
+  .process-inner { max-width: 1100px; margin: 0 auto; }
+  .process-header { margin-bottom: 80px; }
+
+  .process-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    position: relative;
+  }
+  .process-steps::before {
+    content: '';
+    position: absolute;
+    top: 28px; left: 10%; right: 10%;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .step { padding: 0 20px; text-align: center; }
+  .step-num {
+    width: 56px; height: 56px;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    color: var(--gold);
+    margin: 0 auto 28px;
+    background: var(--black);
+    position: relative; z-index: 1;
+  }
+  .step-title {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    margin-bottom: 12px;
+  }
+  .step-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.7; }
+
+  /* ── CONTACT ── */
+  .contact { background: var(--charcoal); }
+  .contact-inner {
+    max-width: 900px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+  }
+  .contact-info { }
+  .contact-info p { font-size: 0.9rem; line-height: 1.85; color: var(--muted); margin-bottom: 40px; }
+
+  .contact-detail {
+    display: flex; flex-direction: column; gap: 20px;
+    margin-bottom: 40px;
+  }
+  .contact-detail-item {
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .contact-detail-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .contact-detail-value {
+    font-size: 0.9rem;
+    color: var(--white);
+  }
+
+  .contact-form { display: flex; flex-direction: column; gap: 20px; }
+
+  .form-group { display: flex; flex-direction: column; gap: 8px; }
+  .form-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .form-input, .form-select, .form-textarea {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    color: var(--white);
+    padding: 14px 16px;
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 300;
+    outline: none;
+    transition: border-color 0.3s;
+    width: 100%;
+    appearance: none;
+  }
+  .form-input:focus, .form-select:focus, .form-textarea:focus {
+    border-color: var(--gold);
+  }
+  .form-select { cursor: pointer; }
+  .form-select option { background: var(--charcoal); }
+  .form-textarea { resize: vertical; min-height: 120px; }
+
+  .form-submit {
+    background: var(--gold);
+    color: var(--black);
+    border: none;
+    padding: 16px 36px;
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+    align-self: flex-start;
+  }
+  .form-submit:hover { background: var(--gold-light); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--black);
+    border-top: 1px solid var(--border);
+    padding: 48px 48px 36px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+
+  .footer-logo {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    letter-spacing: 0.1em;
+  }
+  .footer-logo span { color: var(--gold); }
+
+  .footer-links { display: flex; gap: 32px; list-style: none; }
+  .footer-links a {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .footer-links a:hover { color: var(--gold); }
+
+  .footer-copy { font-size: 0.7rem; color: var(--muted); }
+
+  /* ── PIVOT DOOR SPOTLIGHT ── */
+  .pivot {
+    position: relative;
+    min-height: 92vh;
+    display: flex; align-items: center;
+    overflow: hidden;
+    background: var(--black);
+  }
+  .pivot-bg {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(105deg, rgba(8,8,8,1) 0%, rgba(8,8,8,0.7) 45%, rgba(8,8,8,0.15) 100%),
+      url('images/burned-wood-exterior.jpeg') center right / cover no-repeat;
+  }
+  .pivot-content {
+    position: relative; z-index: 2;
+    padding: 100px 48px;
+    max-width: 640px;
+  }
+  .pivot-eyebrow {
+    font-size: 0.65rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 24px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .pivot-eyebrow::before {
+    content: '';
+    display: block; width: 40px; height: 1px;
+    background: var(--gold);
+  }
+  .pivot-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.8rem, 6vw, 5.5rem);
+    font-weight: 300;
+    line-height: 1.0;
+    margin-bottom: 32px;
+  }
+  .pivot-title em { font-style: italic; color: var(--gold-light); }
+
+  .pivot-body {
+    font-size: 1rem;
+    line-height: 1.95;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+  .pivot-body strong { color: var(--white); font-weight: 400; }
+
+  .pivot-detail {
+    margin-top: 40px;
+    padding: 28px 32px;
+    border: 1px solid var(--border);
+    background: rgba(8,8,8,0.6);
+    backdrop-filter: blur(8px);
+  }
+  .pivot-detail-title {
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+  .pivot-detail p {
+    font-size: 0.85rem;
+    line-height: 1.8;
+    color: var(--muted);
+  }
+  .pivot-detail p + p { margin-top: 10px; }
+
+  /* ── DETAILS GALLERY ── */
+  .details { background: var(--black); padding: 120px 48px; }
+  .details-inner { max-width: 1300px; margin: 0 auto; }
+  .details-header { margin-bottom: 64px; }
+
+  .details-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: auto auto;
+    gap: 4px;
+  }
+
+  /* Large feature image - burned wood exterior */
+  .detail-item:nth-child(1) { grid-column: 1 / 6; grid-row: 1 / 3; }
+  /* Tall right image - living interior */
+  .detail-item:nth-child(2) { grid-column: 9 / 13; grid-row: 1 / 3; }
+  /* Top center - kitchen */
+  .detail-item:nth-child(3) { grid-column: 6 / 9; grid-row: 1 / 2; }
+  /* Bottom center left - plywood wall */
+  .detail-item:nth-child(4) { grid-column: 6 / 8; grid-row: 2 / 3; }
+  /* Bottom center right - switch */
+  .detail-item:nth-child(5) { grid-column: 8 / 9; grid-row: 2 / 3; }
+
+  .detail-item {
+    position: relative;
+    overflow: hidden;
+    background: var(--surface);
+  }
+  .detail-item img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    min-height: 240px;
+    transition: transform 0.7s ease;
+  }
+  .detail-item:hover img { transform: scale(1.06); }
+
+  .detail-caption {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 16px 20px;
+    background: linear-gradient(to top, rgba(8,8,8,0.85) 0%, transparent 100%);
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    opacity: 0;
+    transform: translateY(8px);
+    transition: all 0.3s;
+  }
+  .detail-item:hover .detail-caption { opacity: 1; transform: translateY(0); }
+
+  .details-quote {
+    margin-top: 64px;
+    border-left: 2px solid var(--gold);
+    padding: 8px 0 8px 32px;
+    max-width: 640px;
+  }
+  .details-quote blockquote {
+    font-family: var(--font-display);
+    font-size: clamp(1.4rem, 2.5vw, 2rem);
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.5;
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+  .details-quote cite {
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-style: normal;
+  }
+
+  @media (max-width: 900px) {
+    .details-grid {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto;
+    }
+    .detail-item:nth-child(1) { grid-column: 1 / 3; grid-row: auto; }
+    .detail-item:nth-child(2) { grid-column: 1 / 3; grid-row: auto; }
+    .detail-item:nth-child(3) { grid-column: 1 / 2; grid-row: auto; }
+    .detail-item:nth-child(4) { grid-column: 2 / 3; grid-row: auto; }
+    .detail-item:nth-child(5) { grid-column: 1 / 3; grid-row: auto; }
+  }
+
+  /* ── SOCIAL ── */
+  .social-links { display: flex; gap: 20px; }
+  .social-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+  .social-links a:hover { color: var(--gold); }
+
+  /* ── MOBILE MENU ── */
+  .menu-btn {
+    display: none;
+    background: none; border: none;
+    cursor: pointer; flex-direction: column; gap: 5px;
+    padding: 4px;
+  }
+  .menu-btn span {
+    display: block; width: 24px; height: 1px;
+    background: var(--white);
+    transition: all 0.3s;
+  }
+
+  /* ── FADE-IN ── */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 24px 24px; }
+    .nav-links, .nav-cta { display: none; }
+    .menu-btn { display: flex; }
+
+    section { padding: 80px 24px; }
+    .hero-content { padding: 0 24px 60px; }
+
+    .about { grid-template-columns: 1fr; gap: 48px; }
+    .about-stats { grid-template-columns: 1fr 1fr; }
+
+    .model-card, .model-card.reverse {
+      grid-template-columns: 1fr;
+      direction: ltr;
+    }
+    .model-image { min-height: 300px; }
+    .model-info { padding: 40px 28px; }
+
+    .why-grid { grid-template-columns: 1fr; }
+    .process-steps { grid-template-columns: 1fr 1fr; gap: 40px; }
+    .process-steps::before { display: none; }
+
+    .contact-inner { grid-template-columns: 1fr; gap: 48px; }
+
+    footer { flex-direction: column; align-items: flex-start; gap: 20px; }
+    .footer-links { flex-wrap: wrap; gap: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo">Kubo<span>nook</span></a>
+  <ul class="nav-links">
+    <li><a href="#models">Models</a></li>
+    <li><a href="#why">Features</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Get a Quote</a>
+  <button class="menu-btn" id="menuBtn" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Orlando, Florida · Est. 2024</p>
+    <h1 class="hero-title">Your Backyard.<br><em>Reimagined.</em></h1>
+    <p class="hero-sub">Handcrafted modern backyard spaces built with purpose. Burned wood exteriors, glass walls, and smart interiors — delivered to your property.</p>
+    <div class="hero-actions">
+      <a href="#models" class="btn-primary">Explore Models</a>
+      <a href="#contact" class="btn-outline">Request a Quote</a>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner">
+    KUBO · BACKYARD OFFICE &nbsp;·&nbsp; NOOK · TINY HOME &nbsp;·&nbsp; BURNED WOOD EXTERIOR &nbsp;·&nbsp; GLASS WALLS &nbsp;·&nbsp; METAL ROOF &nbsp;·&nbsp; SMART INTERIOR &nbsp;·&nbsp; ORLANDO FL &nbsp;·&nbsp; BUILT WITH PURPOSE &nbsp;·&nbsp;
+    KUBO · BACKYARD OFFICE &nbsp;·&nbsp; NOOK · TINY HOME &nbsp;·&nbsp; BURNED WOOD EXTERIOR &nbsp;·&nbsp; GLASS WALLS &nbsp;·&nbsp; METAL ROOF &nbsp;·&nbsp; SMART INTERIOR &nbsp;·&nbsp; ORLANDO FL &nbsp;·&nbsp; BUILT WITH PURPOSE &nbsp;·&nbsp;
+  </div>
+</div>
+
+<!-- FIRST IMPRESSION -->
+<section class="first-impression" id="details-hero">
+
+  <div class="fi-intro fade-in">
+    <p class="section-label">What You See First</p>
+    <h2 class="section-title">You stop.<br><em>Before you even open it.</em></h2>
+    <p>You're walking up to something you've only seen on Pinterest. The wood is burned — dark, textured, unlike anything on your street. Then there's the door. A pivot door, handcrafted. You put your hand on it and you already know this space is different.</p>
+  </div>
+
+  <!-- Cinematic expandable panels -->
+  <div class="fi-strip">
+
+    <div class="fi-panel">
+      <img src="images/burned-wood-exterior.jpeg" alt="Burned wood exterior — Shou Sugi Ban">
+      <div class="fi-vert">Burned Wood</div>
+      <div class="fi-label">
+        <span class="fi-label-num">01 · Exterior</span>
+        <span class="fi-label-text">Burned Wood<br>Exterior</span>
+        <span class="fi-label-sub">Shou Sugi Ban technique. Charred, sealed, built to last decades. The texture you can't stop touching.</span>
+      </div>
+    </div>
+
+    <div class="fi-panel">
+      <img src="images/switches.jpeg" alt="Antique brass toggle switches">
+      <div class="fi-vert">Hardware</div>
+      <div class="fi-label">
+        <span class="fi-label-num">02 · Hardware</span>
+        <span class="fi-label-text">Antique Brass<br>Switches</span>
+        <span class="fi-label-sub">Not from a big box store. Premium toggle hardware — the kind you photograph and send to your friends.</span>
+      </div>
+    </div>
+
+    <div class="fi-panel">
+      <img src="images/kitchen.jpeg" alt="Compact minimalist kitchen with LED lighting">
+      <div class="fi-vert">Kitchen</div>
+      <div class="fi-label">
+        <span class="fi-label-num">03 · Kitchen</span>
+        <span class="fi-label-text">Compact<br>Modern Kitchen</span>
+        <span class="fi-label-sub">Under-cabinet LED glow. Induction cooktop. Warm wood upper cabinets. Everything you need, nothing you don't.</span>
+      </div>
+    </div>
+
+    <div class="fi-panel">
+      <img src="images/wall-detail.jpeg" alt="Plywood wall panels with stone base">
+      <div class="fi-vert">Interior</div>
+      <div class="fi-label">
+        <span class="fi-label-num">04 · Interior</span>
+        <span class="fi-label-text">Plywood Walls<br>+ Stone Base</span>
+        <span class="fi-label-sub">Warm. Raw. Intentional. The material transition between wood and stone is a detail most people don't even know to ask for.</span>
+      </div>
+    </div>
+
+    <div class="fi-panel">
+      <img src="images/interior-living.jpeg" alt="Minimalist interior living space">
+      <div class="fi-vert">Living</div>
+      <div class="fi-label">
+        <span class="fi-label-num">05 · Living</span>
+        <span class="fi-label-text">The Inside<br>Moment</span>
+        <span class="fi-label-sub">When they step in and go quiet. Wood panels, herringbone floor, warm light. A small space that feels larger than it is.</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom text bar -->
+  <div style="padding: 28px 48px; border-top: 1px solid var(--border); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px;">
+    <p style="font-size:0.72rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted);">Hover each panel to explore · Every detail is standard, not an upgrade</p>
+    <a href="#models" class="btn-outline" style="font-size:0.68rem; padding:12px 28px;">See the Models</a>
+  </div>
+
+</section>
+
+<!-- PHILOSOPHY -->
+<section class="philosophy">
+  <div class="philosophy-inner">
+    <div class="philosophy-quote fade-in">
+      <blockquote>
+        "Why are you driving a <em>Porsche 911</em> and not a Honda Civic?"
+      </blockquote>
+      <cite>— Javier, Kubonook Founder</cite>
+    </div>
+    <div class="philosophy-text fade-in">
+      <p class="section-label">Our Philosophy</p>
+      <p>Someone asked why we don't build cheap tiny homes for everyone. Someone else asked why so many details — why go this far when no one will notice.</p>
+      <p><strong>People notice.</strong> They stop in front of a Nook and stare at the door. They run their hand across the burned wood. They step inside and go quiet for a second.</p>
+      <p>There is a market for things built with obsession. For spaces where every corner was thought about. For the person who could buy the Honda Civic but chose the 911 — because they understand that <strong>how something makes you feel matters.</strong></p>
+      <p>We build for that person. We build Kubonook for the people who know the difference.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about fade-in">
+    <div class="about-text">
+      <p class="section-label">About Kubonook</p>
+      <h2 class="section-title">Space is the<br><em>ultimate luxury.</em></h2>
+      <p>We transform unused backyard space into purposeful, modern living environments. Every Kubonook is handcrafted with 20+ years of construction expertise — burned wood, glass, steel, and precision.</p>
+      <p>Whether you need a private office steps from your door, a guest suite for family, or an income-generating rental unit, Kubonook delivers a structure that looks like it belongs in an architecture magazine.</p>
+    </div>
+    <div class="about-stats">
+      <div class="stat">
+        <div class="stat-num">20+</div>
+        <div class="stat-label">Years of Experience</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">15</div>
+        <div class="stat-label">Current Orders</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">2</div>
+        <div class="stat-label">Signature Models</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">407</div>
+        <div class="stat-label">Built in Orlando</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODELS -->
+<section id="models" style="padding-top:0; padding-bottom:0; padding-left:0; padding-right:0;">
+  <div class="models-header fade-in" style="padding: 80px 48px 0;">
+    <p class="section-label">Our Models</p>
+    <h2 class="section-title">Two spaces.<br><em>Infinite possibilities.</em></h2>
+  </div>
+
+  <!-- KUBO -->
+  <div class="model-card fade-in">
+    <div class="model-image">
+      <img src="https://img1.wsimg.com/isteam/ip/ced25438-5c87-44bd-b089-ec92b81fcff1/IMG_9219.jpeg" alt="Kubo - Glass office pod in a garden" loading="lazy">
+      <div class="model-tag">Model 01</div>
+    </div>
+    <div class="model-info">
+      <div class="model-name">Kubo</div>
+      <div class="model-size">8 × 8 ft · The Garden Pod</div>
+      <p class="model-desc">A pure backyard sanctuary with floor-to-ceiling glass walls and a burned wood frame. The Kubo is designed for focus, creativity, and privacy — just steps from your home.</p>
+      <ul class="model-features">
+        <li>Burned wood (Shou Sugi Ban) exterior</li>
+        <li>1 or 2 glass walls — your choice, your budget</li>
+        <li>Floor-to-ceiling glass — brings the garden inside</li>
+        <li>Premium LED lighting system</li>
+        <li>Climate control ready</li>
+        <li>Internet / power pre-wired</li>
+        <li>Perfect for home office or creative studio</li>
+      </ul>
+      <div class="model-price">
+        <span class="price-from">Starting at</span>
+        <span class="price-num">Contact us</span>
+      </div>
+      <a href="#contact" class="btn-primary">Reserve Your Kubo</a>
+    </div>
+  </div>
+
+  <!-- NOOK -->
+  <div class="model-card reverse fade-in">
+    <div class="model-image">
+      <img src="https://img1.wsimg.com/isteam/ip/ced25438-5c87-44bd-b089-ec92b81fcff1/IMG_9246.jpeg" alt="Nook - Modern tiny home exterior" loading="lazy" onerror="this.src='https://img1.wsimg.com/isteam/ip/ced25438-5c87-44bd-b089-ec92b81fcff1/IMG_9219.jpeg'">
+      <div class="model-tag">Model 02</div>
+    </div>
+    <div class="model-info">
+      <div class="model-name">Nook</div>
+      <div class="model-size">8 × 16 × 10 ft · The Suite</div>
+      <p class="model-desc">A full tiny home with 10-foot ceilings, a modern mini kitchen, smart toilet, and a plywood minimalist interior that feels like a boutique hotel. Live in it, rent it, or host in it.</p>
+      <ul class="model-features">
+        <li>Handcrafted pivot door — designed &amp; built by our founder</li>
+        <li>Burned wood exterior + standing seam metal roof</li>
+        <li>Optional: corrugated metal accent wall — cascade finish</li>
+        <li>10 ft ceilings — room to actually breathe</li>
+        <li>Full LED lighting — warm, dimmable, smart-ready</li>
+        <li>Smart toilet + modern bathroom</li>
+        <li>Compact modern kitchen — induction, sink, storage</li>
+        <li>Plywood minimalist interior — warm, raw, intentional</li>
+        <li>Antique brass hardware throughout</li>
+        <li>Guest suite · STR rental · full-time living</li>
+      </ul>
+      <div class="model-price">
+        <span class="price-from">Starting at</span>
+        <span class="price-num">Contact us</span>
+      </div>
+      <a href="#contact" class="btn-primary">Reserve Your Nook</a>
+    </div>
+  </div>
+</section>
+
+<!-- PIVOT DOOR SPOTLIGHT -->
+<div class="pivot">
+  <div class="pivot-bg"></div>
+  <div class="pivot-content">
+    <p class="pivot-eyebrow">The Nook · Signature Detail</p>
+    <h2 class="pivot-title">The door<br>they can't<br><em>stop staring at.</em></h2>
+    <p class="pivot-body">
+      You've saved it on Pinterest. You've seen it in a movie and thought — <strong>where do I get that?</strong>
+      You've scrolled past it on Instagram and double-tapped before you even knew what it was.
+    </p>
+    <p class="pivot-body">
+      Every Nook comes with a <strong>custom pivot door — designed and built by hand by our founder.</strong>
+      Not from Home Depot. Not from a catalog. The kind of door that makes a stranger stop in front of your backyard
+      and ask: <em>"Who made that?"</em>
+    </p>
+    <p class="pivot-body">
+      Then they notice the wood. Burned. Textured. Dark. Like nothing on their street.
+      And then they step inside — and that's when they're completely lost.
+    </p>
+
+    <div class="pivot-detail">
+      <p class="pivot-detail-title">Why a pivot door?</p>
+      <p>A standard door says "utility." A pivot door says "this space was thought about." The weight of it, the way it swings, the hardware — every guest who enters your Nook will feel it before they see the interior.</p>
+      <p>No two pivot doors are identical. Yours will be one of a kind — just like the space it opens into.</p>
+    </div>
+  </div>
+</div>
+
+<!-- DETAILS -->
+<section class="details" id="details">
+  <div class="details-inner">
+    <div class="details-header fade-in">
+      <p class="section-label">The Craft</p>
+      <h2 class="section-title">Every corner<br><em>has intention.</em></h2>
+    </div>
+
+    <div class="details-grid fade-in">
+
+      <!-- Burned wood exterior close-up -->
+      <div class="detail-item">
+        <img src="images/burned-wood-exterior.jpeg" alt="Burned wood Shou Sugi Ban exterior texture">
+        <div class="detail-caption">Burned Wood Exterior</div>
+      </div>
+
+      <!-- Interior living / plywood wall vibe -->
+      <div class="detail-item">
+        <img src="images/interior-living.jpeg" alt="Minimalist interior with plywood walls and warm tones">
+        <div class="detail-caption">Plywood Interior · Warm Palette</div>
+      </div>
+
+      <!-- Minimalist kitchen -->
+      <div class="detail-item">
+        <img src="images/kitchen.jpeg" alt="Compact modern kitchen with LED lighting">
+        <div class="detail-caption">Compact Modern Kitchen · LED Under-Cabinet</div>
+      </div>
+
+      <!-- Plywood wall + stone detail -->
+      <div class="detail-item">
+        <img src="images/wall-detail.jpeg" alt="Plywood wall panel with stone base transition">
+        <div class="detail-caption">Material Transitions · Wood + Stone</div>
+      </div>
+
+      <!-- Premium toggle switch -->
+      <div class="detail-item">
+        <img src="images/switches.jpeg" alt="Antique brass toggle light switches">
+        <div class="detail-caption">Antique Brass Hardware</div>
+      </div>
+
+    </div>
+
+    <div class="details-quote fade-in">
+      <blockquote>"Small but every corner has love and time thinking how to make it look unique."</blockquote>
+      <cite>— Javier, Kubonook Founder</cite>
+    </div>
+  </div>
+</section>
+
+<!-- WHY -->
+<section id="why" class="why">
+  <div class="why-inner">
+    <div class="why-header fade-in">
+      <p class="section-label">Why Kubonook</p>
+      <h2 class="section-title">Built different.<br><em>By design.</em></h2>
+    </div>
+    <div class="why-grid">
+      <div class="why-item fade-in">
+        <svg class="why-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="4" y="4" width="32" height="32" stroke="#C9A46E" stroke-width="1"/>
+          <rect x="10" y="10" width="20" height="20" stroke="#C9A46E" stroke-width="0.5"/>
+          <line x1="20" y1="4" x2="20" y2="36" stroke="#C9A46E" stroke-width="0.5"/>
+        </svg>
+        <div class="why-title">Architectural Quality</div>
+        <p class="why-desc">Not a shed. Not a prefab. Every Kubonook is built with architectural precision — materials and details that look expensive because they are.</p>
+      </div>
+      <div class="why-item fade-in">
+        <svg class="why-icon" viewBox="0 0 40 40" fill="none">
+          <circle cx="20" cy="20" r="14" stroke="#C9A46E" stroke-width="1"/>
+          <circle cx="20" cy="20" r="4" fill="#C9A46E"/>
+          <line x1="20" y1="6" x2="20" y2="12" stroke="#C9A46E" stroke-width="1"/>
+          <line x1="20" y1="28" x2="20" y2="34" stroke="#C9A46E" stroke-width="1"/>
+          <line x1="6" y1="20" x2="12" y2="20" stroke="#C9A46E" stroke-width="1"/>
+          <line x1="28" y1="20" x2="34" y2="20" stroke="#C9A46E" stroke-width="1"/>
+        </svg>
+        <div class="why-title">Smart & Ready</div>
+        <p class="why-desc">LED lighting, power pre-wiring, and smart integrations built in. The Nook comes with a smart toilet, full kitchen, and can connect to your home's utilities.</p>
+      </div>
+      <div class="why-item fade-in">
+        <svg class="why-icon" viewBox="0 0 40 40" fill="none">
+          <path d="M8 32 L20 8 L32 32" stroke="#C9A46E" stroke-width="1"/>
+          <line x1="12" y1="24" x2="28" y2="24" stroke="#C9A46E" stroke-width="0.5"/>
+        </svg>
+        <div class="why-title">Adds Real Value</div>
+        <p class="why-desc">A Kubonook increases your property value and can generate rental income as an Airbnb or long-term rental unit — it pays for itself.</p>
+      </div>
+      <div class="why-item fade-in">
+        <svg class="why-icon" viewBox="0 0 40 40" fill="none">
+          <rect x="6" y="16" width="28" height="20" stroke="#C9A46E" stroke-width="1"/>
+          <path d="M6 16 L20 6 L34 16" stroke="#C9A46E" stroke-width="1"/>
+        </svg>
+        <div class="why-title">Custom to Your Yard</div>
+        <p class="why-desc">Every property is different. We survey your space and adapt placement, orientation, and finishing details to fit your specific backyard and style.</p>
+      </div>
+      <div class="why-item fade-in">
+        <svg class="why-icon" viewBox="0 0 40 40" fill="none">
+          <path d="M8 20 Q14 8 20 20 Q26 32 32 20" stroke="#C9A46E" stroke-width="1" fill="none"/>
+          <circle cx="8" cy="20" r="2" fill="#C9A46E"/>
+          <circle cx="32" cy="20" r="2" fill="#C9A46E"/>
+        </svg>
+        <div class="why-title">20+ Years Experience</div>
+        <p class="why-desc">Built by the team behind 407 Renovations — with two decades of construction expertise, a reputation for quality, and a waitlist that proves it.</p>
+      </div>
+      <div class="why-item fade-in">
+        <svg class="why-icon" viewBox="0 0 40 40" fill="none">
+          <polygon points="20,4 24,16 36,16 26,24 30,36 20,28 10,36 14,24 4,16 16,16" stroke="#C9A46E" stroke-width="1" fill="none"/>
+        </svg>
+        <div class="why-title">Trusted by Clients</div>
+        <p class="why-desc">Our work has earned trust from homeowners, investors, and even celebrity clients who demand the best. The product speaks for itself.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="process-inner">
+    <div class="process-header fade-in">
+      <p class="section-label">How It Works</p>
+      <h2 class="section-title">From inquiry<br><em>to move-in.</em></h2>
+    </div>
+    <div class="process-steps fade-in">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-title">Consultation</div>
+        <p class="step-desc">We visit your property, assess the space, and understand your vision and goals.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-title">Design & Quote</div>
+        <p class="step-desc">You receive a detailed proposal with model selection, layout, and all-in pricing.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-title">Build</div>
+        <p class="step-desc">Our crew handles everything from foundation to final finish. You watch it come to life.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <div class="step-title">Move In</div>
+        <p class="step-desc">Keys in hand. Your new space is ready — office, suite, or rental — from day one.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="contact">
+  <div class="contact-inner">
+    <div class="contact-info fade-in">
+      <p class="section-label">Get in Touch</p>
+      <h2 class="section-title">Let's build<br><em>your space.</em></h2>
+      <p>Ready to transform your backyard? We're taking reservations now. Drop us your info and we'll reach out within 24 hours.</p>
+      <div class="contact-detail">
+        <div class="contact-detail-item">
+          <span class="contact-detail-label">Location</span>
+          <span class="contact-detail-value">Orlando, FL 32837</span>
+        </div>
+        <div class="contact-detail-item">
+          <span class="contact-detail-label">Phone</span>
+          <span class="contact-detail-value"><a href="tel:14079780669" style="color:inherit;text-decoration:none;">+1 (407) 978-0669</a></span>
+        </div>
+        <div class="contact-detail-item">
+          <span class="contact-detail-label">Follow Us</span>
+          <div class="social-links" style="margin-top:4px;">
+            <a href="https://www.instagram.com/KuboNook" target="_blank">Instagram</a>
+            <a href="https://www.tiktok.com/@KuboNook" target="_blank">TikTok</a>
+            <a href="https://www.facebook.com/Kubonook" target="_blank">Facebook</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="fade-in">
+      <form class="contact-form" id="contactForm" onsubmit="handleSubmit(event)">
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input class="form-input" type="text" placeholder="Your name" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input class="form-input" type="email" placeholder="your@email.com" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Phone</label>
+          <input class="form-input" type="tel" placeholder="(407) 000-0000">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Model Interest</label>
+          <select class="form-select">
+            <option value="">Select a model</option>
+            <option value="kubo">Kubo — 8×8 Garden Pod</option>
+            <option value="nook">Nook — 8×16 Tiny Home</option>
+            <option value="both">Both Models</option>
+            <option value="unsure">Not sure yet</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Intended Use</label>
+          <select class="form-select">
+            <option value="">Select use case</option>
+            <option>Home Office / Studio</option>
+            <option>Guest Suite</option>
+            <option>Short-Term Rental (Airbnb)</option>
+            <option>Long-Term Rental</option>
+            <option>Personal Living Space</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Message</label>
+          <textarea class="form-textarea" placeholder="Tell us about your backyard and what you're envisioning..."></textarea>
+        </div>
+        <button type="submit" class="form-submit" id="submitBtn">Send Inquiry</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Kubo<span>nook</span></div>
+  <ul class="footer-links">
+    <li><a href="#models">Models</a></li>
+    <li><a href="#why">Features</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="https://www.instagram.com/KuboNook" target="_blank">Instagram</a></li>
+    <li><a href="https://www.tiktok.com/@KuboNook" target="_blank">TikTok</a></li>
+  </ul>
+  <span class="footer-copy">© 2026 Kubonook · Orlando, FL · All rights reserved.</span>
+</footer>
+
+<script>
+  // Nav scroll
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Fade-in on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // Form submit
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = document.getElementById('submitBtn');
+    btn.textContent = 'Sending...';
+    btn.style.opacity = '0.7';
+    setTimeout(() => {
+      btn.textContent = '✓ Message Sent';
+      btn.style.background = '#2a5a2a';
+      btn.style.color = '#fff';
+      e.target.reset();
+    }, 1200);
+  }
+</script>
+
+</body>
+</html>
