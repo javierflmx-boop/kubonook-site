@@ -1395,7 +1395,7 @@
       </div>
     </div>
     <div class="fade-in">
-      <form class="contact-form" id="contactForm" onsubmit="handleSubmit(event)">
+      <form class="contact-form" action="https://formspree.io/f/mykoqjjp" method="POST">
         <div class="form-group">
           <label class="form-label">Full Name</label>
           <input class="form-input" type="text" placeholder="Your name" required>
@@ -1472,19 +1472,7 @@
   }, { threshold: 0.12 });
   document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-  // Form submit
-  function handleSubmit(e) {
-    e.preventDefault();
-    const btn = document.getElementById('submitBtn');
-    btn.textContent = 'Sending...';
-    btn.style.opacity = '0.7';
-    setTimeout(() => {
-      btn.textContent = '✓ Message Sent';
-      btn.style.background = '#2a5a2a';
-      btn.style.color = '#fff';
-      e.target.reset();
-    }, 1200);
-  }
+  // Form submit handled by Formspree
 </script>
 
 </body>
