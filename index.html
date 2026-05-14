@@ -1398,19 +1398,19 @@
       <form class="contact-form" action="https://formspree.io/f/mykoqjjp" method="POST">
         <div class="form-group">
           <label class="form-label">Full Name</label>
-          <input class="form-input" type="text" placeholder="Your name" required>
+          <input class="form-input" type="text" name="name" placeholder="Your name" required>
         </div>
         <div class="form-group">
           <label class="form-label">Email</label>
-          <input class="form-input" type="email" placeholder="your@email.com" required>
+          <input class="form-input" type="email" name="email" placeholder="your@email.com" required>
         </div>
         <div class="form-group">
           <label class="form-label">Phone</label>
-          <input class="form-input" type="tel" placeholder="(407) 000-0000">
+          <input class="form-input" type="tel" name="phone" placeholder="(407) 000-0000">
         </div>
         <div class="form-group">
           <label class="form-label">Model Interest</label>
-          <select class="form-select">
+          <select class="form-select" name="model">
             <option value="">Select a model</option>
             <option value="kubo">Kubo — 8×8 Garden Pod</option>
             <option value="nook">Nook — 8×16 Tiny Home</option>
@@ -1420,7 +1420,7 @@
         </div>
         <div class="form-group">
           <label class="form-label">Intended Use</label>
-          <select class="form-select">
+          <select class="form-select" name="intended_use">
             <option value="">Select use case</option>
             <option>Home Office / Studio</option>
             <option>Guest Suite</option>
@@ -1432,7 +1432,7 @@
         </div>
         <div class="form-group">
           <label class="form-label">Message</label>
-          <textarea class="form-textarea" placeholder="Tell us about your backyard and what you're envisioning..."></textarea>
+          <textarea class="form-textarea" name="message" placeholder="Tell us about your backyard and what you're envisioning..."></textarea>
         </div>
         <button type="submit" class="form-submit" id="submitBtn">Send Inquiry</button>
       </form>
