@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Configure Your Kubonook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --black: #080808; --charcoal: #111; --surface: #161616; --surface2: #1e1e1e;
+    --border: rgba(201,164,110,0.15); --border-h: rgba(201,164,110,0.5);
+    --gold: #C9A46E; --gold-l: #E2C49A;
+    --white: #F5F0EA; --muted: rgba(245,240,234,0.45);
+    --fd: 'Cormorant Garamond', serif; --fb: 'Outfit', sans-serif;
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--black); color: var(--white); font-family: var(--fb); font-weight: 300; min-height: 100vh; }
+  ::-webkit-scrollbar { width: 3px; } ::-webkit-scrollbar-thumb { background: var(--gold); }
+
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 22px 48px; background: rgba(8,8,8,0.97); border-bottom: 1px solid var(--border); }
+  .logo { font-family: var(--fd); font-size: 1.4rem; font-weight: 400; letter-spacing: 0.12em; color: var(--white); text-decoration: none; }
+  .logo span { color: var(--gold); }
+  .back { font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.3s; }
+  .back:hover { color: var(--gold); }
+
+  .hero { padding: 100px 48px 48px; background: var(--charcoal); border-bottom: 1px solid var(--border); }
+  .eyebrow { font-size: 0.63rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; }
+  h1 { font-family: var(--fd); font-size: clamp(2rem, 5vw, 3.8rem); font-weight: 300; line-height: 1.05; margin-bottom: 14px; }
+  h1 em { font-style: italic; color: var(--gold-l); }
+  .sub { font-size: 0.88rem; color: var(--muted); line-height: 1.7; max-width: 480px; }
+
+  .prog { display: flex; gap: 3px; background: var(--charcoal); padding: 0 48px 0; max-width: calc(1200px + 96px); margin: 0 auto; }
+  .ps { height: 3px; flex: 1; background: var(--border); transition: background 0.4s; }
+  .ps.active { background: rgba(201,164,110,0.4); }
+  .ps.done { background: var(--gold); }
+
+  .layout { display: grid; grid-template-columns: 1fr 360px; max-width: 1200px; margin: 0 auto; padding: 0 48px; }
+
+  .steps-col { padding: 48px 48px 48px 0; border-right: 1px solid var(--border); }
+  .step { display: none; } .step.on { display: block; }
+
+  .sh { display: flex; align-items: center; gap: 16px; margin-bottom: 28px; }
+  .sn { width: 36px; height: 36px; border: 1px solid var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--fd); font-size: 1rem; color: var(--gold); flex-shrink: 0; }
+  .st { font-family: var(--fd); font-size: 1.5rem; font-weight: 300; }
+  .ss { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
+
+  .sec-lbl { font-size: 0.62rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold); margin: 28px 0 12px; }
+
+  /* MODEL CARDS */
+  .mg { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .mc { border: 1px solid var(--border); background: var(--surface); cursor: pointer; transition: all 0.25s; position: relative; overflow: hidden; }
+  .mc:hover { border-color: var(--border-h); background: var(--surface2); }
+  .mc.on { border-color: var(--gold); background: var(--surface2); }
+  .mc.on::after { content: '✓'; position: absolute; top: 14px; right: 16px; color: var(--gold); font-size: 0.85rem; }
+  .mc img { width: 100%; height: 160px; object-fit: cover; display: block; filter: brightness(0.8); transition: filter 0.3s; }
+  .mc:hover img, .mc.on img { filter: brightness(1); }
+  .mc-b { padding: 18px 20px 22px; }
+  .mc-n { font-family: var(--fd); font-size: 1.5rem; font-weight: 300; margin-bottom: 2px; }
+  .mc-sz { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+  .mc-d { font-size: 0.75rem; color: var(--muted); line-height: 1.6; margin-bottom: 12px; }
+  .mc-p { font-family: var(--fd); font-size: 1.5rem; color: var(--gold-l); }
+  .mc-fr { font-size: 0.58rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 2px; }
+
+  /* FINISH */
+  .fg { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+  .fc { border: 1px solid var(--border); background: var(--surface); padding: 16px; cursor: pointer; transition: all 0.25s; position: relative; text-align: center; }
+  .fc:hover { border-color: var(--border-h); background: var(--surface2); }
+  .fc.on { border-color: var(--gold); background: var(--surface2); }
+  .fc.on::after { content: '✓'; position: absolute; top: 8px; right: 10px; color: var(--gold); font-size: 0.72rem; }
+  .fp { width: 100%; height: 50px; border-radius: 2px; margin-bottom: 10px; }
+  .fn { font-size: 0.8rem; margin-bottom: 3px; }
+  .fi { font-size: 0.58rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); }
+  .fpr { font-family: var(--fd); font-size: 1rem; color: var(--gold-l); }
+
+  /* PALETTE */
+  .pg { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; }
+  .sw { border: 2px solid transparent; cursor: pointer; transition: all 0.25s; border-radius: 2px; overflow: hidden; }
+  .sw:hover { border-color: var(--border-h); transform: translateY(-2px); }
+  .sw.on { border-color: var(--gold); transform: translateY(-2px); }
+  .sc { height: 48px; width: 100%; }
+  .sl { background: var(--surface); padding: 7px 8px; font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+  .sw.on .sl { color: var(--gold); }
+
+  /* TOGGLE */
+  .tl { display: flex; flex-direction: column; gap: 8px; }
+  .ti { display: flex; align-items: center; justify-content: space-between; border: 1px solid var(--border); background: var(--surface); padding: 14px 18px; cursor: pointer; transition: all 0.25s; gap: 12px; }
+  .ti:hover { border-color: var(--border-h); background: var(--surface2); }
+  .ti.on { border-color: var(--gold); background: var(--surface2); }
+  .ti.locked { cursor: default; }
+  .ti-info { flex: 1; }
+  .ti-n { font-size: 0.86rem; margin-bottom: 2px; }
+  .ti-d { font-size: 0.68rem; color: var(--muted); line-height: 1.5; }
+  .ti-r { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+  .ti-p { font-family: var(--fd); font-size: 1rem; color: var(--gold-l); white-space: nowrap; }
+  .ti-inc { font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); }
+  .ck { width: 20px; height: 20px; border: 1px solid var(--border); border-radius: 50%; transition: all 0.25s; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; color: transparent; flex-shrink: 0; }
+  .ti.on .ck { background: var(--gold); border-color: var(--gold); color: var(--black); }
+  .ti.on .ck::after { content: '✓'; }
+
+  /* USE */
+  .ug { display: flex; flex-direction: column; gap: 8px; }
+  .uc { border: 1px solid var(--border); background: var(--surface); padding: 14px 18px; cursor: pointer; transition: all 0.25s; position: relative; }
+  .uc:hover { border-color: var(--border-h); background: var(--surface2); }
+  .uc.on { border-color: var(--gold); background: var(--surface2); }
+  .uc.on::after { content: '✓'; position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: var(--gold); }
+  .uc-n { font-size: 0.88rem; margin-bottom: 2px; }
+  .uc-d { font-size: 0.7rem; color: var(--muted); line-height: 1.5; }
+
+  /* BUTTONS */
+  .nav-btns { display: flex; gap: 10px; margin-top: 32px; }
+  .bn { background: var(--gold); color: var(--black); border: none; padding: 14px 30px; font-family: var(--fb); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; transition: all 0.3s; }
+  .bn:hover { background: var(--gold-l); }
+  .bn:disabled { opacity: 0.3; cursor: not-allowed; }
+  .bp { background: transparent; color: var(--muted); border: 1px solid var(--border); padding: 14px 20px; font-family: var(--fb); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; transition: all 0.3s; }
+  .bp:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* SUMMARY */
+  .sum { padding: 48px 0 48px 40px; position: sticky; top: 80px; align-self: start; }
+  .sum-lbl { font-size: 0.62rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; }
+  .sum-mn { font-family: var(--fd); font-size: 2rem; font-weight: 300; margin-bottom: 2px; }
+  .sum-ms { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 18px; }
+  .sum-img { width: 100%; height: 180px; object-fit: cover; display: block; margin-bottom: 16px; filter: brightness(0.85); }
+  .sum-ph { width: 100%; height: 180px; background: var(--surface); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; margin-bottom: 16px; color: var(--muted); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; }
+  .sum-cp { width: 100%; height: 32px; border-radius: 2px; margin-bottom: 16px; border: 1px solid var(--border); transition: background 0.4s; display: none; }
+  .sum-rows { margin-bottom: 20px; }
+  .sr { display: flex; justify-content: space-between; align-items: baseline; padding: 8px 0; border-bottom: 1px solid rgba(201,164,110,0.07); font-size: 0.76rem; gap: 8px; }
+  .sr-l { color: var(--muted); flex-shrink: 0; }
+  .sr-v { color: var(--white); text-align: right; }
+  .sr-p { color: var(--gold); font-family: var(--fd); font-size: 0.9rem; flex-shrink: 0; }
+  .sum-box { background: var(--surface); border: 1px solid var(--border); padding: 20px; margin-bottom: 18px; }
+  .sum-box-l { font-size: 0.58rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+  .sum-box-n { font-family: var(--fd); font-size: 2.8rem; font-weight: 300; color: var(--gold-l); line-height: 1; margin-bottom: 6px; }
+  .sum-box-note { font-size: 0.64rem; color: var(--muted); line-height: 1.6; }
+  .bq { display: block; width: 100%; background: var(--gold); color: var(--black); border: none; padding: 16px; font-family: var(--fb); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; transition: all 0.3s; text-align: center; text-decoration: none; margin-bottom: 10px; }
+  .bq:hover { background: var(--gold-l); }
+  .bq.off { opacity: 0.3; pointer-events: none; }
+  .sum-note { font-size: 0.62rem; color: var(--muted); text-align: center; line-height: 1.6; }
+
+  @media(max-width:900px){
+    nav{padding:18px 20px;}
+    .hero{padding:80px 20px 36px;}
+    .prog{padding:0 20px;}
+    .layout{grid-template-columns:1fr;padding:0 20px;}
+    .steps-col{padding:36px 0;border-right:none;border-bottom:1px solid var(--border);}
+    .sum{padding:36px 0;position:static;}
+    .mg{grid-template-columns:1fr;}
+    .fg{grid-template-columns:repeat(3,1fr);}
+    .pg{grid-template-columns:repeat(4,1fr);}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">Kubo<span>nook</span></a>
+  <a href="/" class="back">← Back to Site</a>
+</nav>
+
+<div class="hero">
+  <p class="eyebrow">Kubonook · Configurator</p>
+  <h1>Build your<br><em>perfect space.</em></h1>
+  <p class="sub">Choose your model, finish, colors, and options — and get a real price estimate instantly. Every Kubonook is custom — this is where it starts.</p>
+</div>
+
+<div class="prog">
+  <div class="ps active" id="ps1"></div>
+  <div class="ps" id="ps2"></div>
+  <div class="ps" id="ps3"></div>
+  <div class="ps" id="ps4"></div>
+  <div class="ps" id="ps5"></div>
+</div>
+
+<div class="layout">
+<div class="steps-col">
+
+  <!-- STEP 1 -->
+  <div class="step on" id="s1">
+    <div class="sh"><div class="sn">1</div><div><div class="st">Choose your model</div><div class="ss">Two sizes, one obsession with detail</div></div></div>
+    <div class="mg">
+      <div class="mc" id="mc-kubo" onclick="pickModel('kubo')">
+        <img src="https://img1.wsimg.com/isteam/ip/ced25438-5c87-44bd-b089-ec92b81fcff1/IMG_9219.jpeg" alt="Kubo">
+        <div class="mc-b">
+          <div class="mc-n">Kubo</div><div class="mc-sz">8 × 8 ft · Garden Pod</div>
+          <div class="mc-d">Glass walls, custom exterior finish. Your backyard office or creative studio.</div>
+          
+        </div>
+      </div>
+      <div class="mc" id="mc-nook" onclick="pickModel('nook')">
+        <img src="https://img1.wsimg.com/isteam/ip/ced25438-5c87-44bd-b089-ec92b81fcff1/IMG_9246.jpeg" alt="Nook">
+        <div class="mc-b">
+          <div class="mc-n">Nook</div><div class="mc-sz">8 × 16 × 10 ft · Tiny Home</div>
+          <div class="mc-d">Custom pivot door, full kitchen, smart toilet. Live in it or earn from it.</div>
+          
+        </div>
+      </div>
+    </div>
+    <div class="nav-btns"><button class="bn" id="b1" onclick="go(2)" disabled>Continue →</button></div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="step" id="s2">
+    <div class="sh"><div class="sn">2</div><div><div class="st">Exterior finish</div><div class="ss">Every option is Javier-approved</div></div></div>
+    <div class="fg">
+      <div class="fc on" id="fin-painted" onclick="pickFin('painted',0)">
+        <div class="fp" style="background:linear-gradient(135deg,#d4cec8,#bfb9b3);"></div>
+        <div class="fn">Painted</div><div class="fi">Included</div>
+      </div>
+      <div class="fc" id="fin-stain" onclick="pickFin('stain',0)">
+        <div class="fp" style="background:linear-gradient(135deg,#8B6F47,#6B4F2A);"></div>
+        <div class="fn">Stain</div><div class="fi">Included</div>
+      </div>
+      <div class="fc" id="fin-burned" onclick="pickFin('burned',R.model==='kubo'?800:3000)">
+        <div class="fp" style="background:#1a1a18;background-image:repeating-linear-gradient(90deg,rgba(255,255,255,0.04) 0,rgba(255,255,255,0.04) 2px,transparent 2px,transparent 12px);"></div>
+        <div class="fn">Burned Wood</div><div class="fi">Premium Finish</div>
+      </div>
+    </div>
+
+    <p class="sec-lbl">The Kubonook Color Palette</p>
+    <p style="font-size:0.74rem;color:var(--muted);margin-bottom:16px;line-height:1.7;">These are the only colors we offer — each one personally selected by Javier. Every combination looks exactly how it should.</p>
+    <div class="pg">
+      <div class="sw" onclick="pickCol(this,'Obsidian','#1a1a1a')"><div class="sc" style="background:#1a1a1a;"></div><div class="sl">Obsidian</div></div>
+      <div class="sw" onclick="pickCol(this,'Slate','#3d3d3d')"><div class="sc" style="background:#3d3d3d;"></div><div class="sl">Slate</div></div>
+      <div class="sw" onclick="pickCol(this,'Graphite','#565856')"><div class="sc" style="background:#565856;"></div><div class="sl">Graphite</div></div>
+      <div class="sw" onclick="pickCol(this,'Bone','#e8e0d5')"><div class="sc" style="background:#e8e0d5;"></div><div class="sl">Bone</div></div>
+      <div class="sw" onclick="pickCol(this,'Dune','#c4a882')"><div class="sc" style="background:#c4a882;"></div><div class="sl">Dune</div></div>
+      <div class="sw" onclick="pickCol(this,'Sage','#7d8c72')"><div class="sc" style="background:#7d8c72;"></div><div class="sl">Sage</div></div>
+      <div class="sw" onclick="pickCol(this,'Warm White','#f0ebe3')"><div class="sc" style="background:#f0ebe3;border:1px solid rgba(0,0,0,0.08);"></div><div class="sl">Warm White</div></div>
+      <div class="sw" onclick="pickCol(this,'Char. Green','#3a4a3a')"><div class="sc" style="background:#3a4a3a;"></div><div class="sl">Char. Green</div></div>
+    </div>
+    <div class="nav-btns">
+      <button class="bp" onclick="go(1)">← Back</button>
+      <button class="bn" id="b2" onclick="go(3)" disabled>Continue →</button>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="step" id="s3">
+    <div class="sh"><div class="sn">3</div><div><div class="st" id="s3t">Options</div><div class="ss">Everything built in — nothing from a catalog</div></div></div>
+    <div class="tl" id="s3list"></div>
+    <div class="nav-btns"><button class="bp" onclick="go(2)">← Back</button><button class="bn" onclick="go(4)">Continue →</button></div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="step" id="s4">
+    <div class="sh"><div class="sn">4</div><div><div class="st" id="s4t">Cabinets</div><div class="ss" id="s4s">European style — your finish choice</div></div></div>
+    <div id="s4c"></div>
+    <div class="nav-btns"><button class="bp" onclick="go(3)">← Back</button><button class="bn" onclick="go(5)">Continue →</button></div>
+  </div>
+
+  <!-- STEP 5 -->
+  <div class="step" id="s5">
+    <div class="sh"><div class="sn">5</div><div><div class="st">How will you use it?</div><div class="ss">Helps us prepare the right quote for you</div></div></div>
+    <div class="ug">
+      <div class="uc" onclick="pickUse(this,'Home Office / Studio')"><div class="uc-n">Home Office / Studio</div><div class="uc-d">Focus, creativity, and privacy — steps from your back door.</div></div>
+      <div class="uc" onclick="pickUse(this,'Guest Suite')"><div class="uc-n">Guest Suite</div><div class="uc-d">A private space that feels like a boutique hotel.</div></div>
+      <div class="uc" onclick="pickUse(this,'Short-Term Rental (Airbnb)')"><div class="uc-n">Short-Term Rental (Airbnb)</div><div class="uc-d">Generate income from your backyard. Guests book spaces like this instantly.</div></div>
+      <div class="uc" onclick="pickUse(this,'Long-Term Rental')"><div class="uc-n">Long-Term Rental</div><div class="uc-d">A tenant space that pays for itself and adds real property value.</div></div>
+      <div class="uc" onclick="pickUse(this,'Personal Living Space')"><div class="uc-n">Personal Living Space</div><div class="uc-d">Minimalist full-time living — done the right way.</div></div>
+    </div>
+    <div class="nav-btns"><button class="bp" onclick="go(4)">← Back</button><button class="bn" id="b5" onclick="done()" disabled>Get My Quote →</button></div>
+  </div>
+
+</div>
+
+<!-- SUMMARY -->
+<div class="sum">
+  <p class="sum-lbl">Your Configuration</p>
+  <div id="sum-mn" class="sum-mn" style="display:none;"></div>
+  <div id="sum-ms" class="sum-ms" style="display:none;"></div>
+  <img id="sum-img" class="sum-img" src="" alt="" style="display:none;">
+  <div id="sum-ph" class="sum-ph">Select a model to begin</div>
+  <div id="sum-cp" class="sum-cp"></div>
+  <div class="sum-rows" id="sum-rows"></div>
+  <div class="sum-box">
+    <div class="sum-box-l">Your Configuration</div>
+    <div class="sum-box-n" id="sum-total" style="font-size:1.4rem;line-height:1.4;">We'll send you a custom quote within 24 hours.</div>
+    <div class="sum-box-note">Every Kubonook is priced based on your specific build, backyard, and options. No guessing — just a real number for your real project.</div>
+  </div>
+  <a href="/#contact" class="bq off" id="bq">Request This Quote</a>
+  <p class="sum-note">We reach out within 24 hours to confirm your config and schedule a site visit.</p>
+</div>
+</div>
+
+<script>
+const R = { model:null, base:0, fin:'painted', finP:0, color:null, colorHex:null, extras:{}, cab:null, use:null };
+
+const M = {
+  kubo:{ name:'Kubo', size:'8 × 8 ft · Garden Pod', base:13000,
+    img:'https://img1.wsimg.com/isteam/ip/ced25438-5c87-44bd-b089-ec92b81fcff1/IMG_9219.jpeg',
+    s3t:'Glass & Add-ons', cab:false,
+    opts:[
+      {k:'g1',n:'1 Glass Wall',d:'One full floor-to-ceiling glass wall.',p:0,lock:true},
+      {k:'g2',n:'2 Glass Walls',d:'A second full glass wall — panoramic open-air feel.',p:3000},
+      {k:'ac',n:'Mini-Split AC / Heat',d:'Year-round climate control, pre-installed.',p:1800},
+      {k:'pw',n:'Power & Internet Pre-Wiring',d:'Everything run in before walls close.',p:0,lock:true},
+      {k:'led',n:'Full LED Lighting',d:'Warm, dimmable, smart-ready.',p:0,lock:true},
+    ]
+  },
+  nook:{ name:'Nook', size:'8 × 16 × 10 ft · Tiny Home', base:42000,
+    img:'https://img1.wsimg.com/isteam/ip/ced25438-5c87-44bd-b089-ec92b81fcff1/IMG_9246.jpeg',
+    s3t:'Doors, Walls & Add-ons', cab:true,
+    opts:[
+      {k:'pd',n:'Custom Handcrafted Pivot Door',d:'Built by our founder. One of a kind — not from any store.',p:0,lock:true},
+      {k:'pdg',n:'Pivot Door + Glass Panel',d:'Add glass to your pivot door — light, character, and drama.',p:900},
+      {k:'mw',n:'Metal Cascade Accent Wall',d:'Corrugated metal exterior wall — industrial meets architecture.',p:2500},
+      {k:'kit',n:'Modern Mini Kitchen',d:'Induction cooktop, sink, wood uppers, LED under-cabinet lighting.',p:0,lock:true},
+      {k:'st',n:'Smart Toilet',d:'Modern smart toilet — the kind guests photograph.',p:0,lock:true},
+      {k:'rt',n:'Standard Toilet (instead of smart)',d:'Swap the smart toilet for a clean modern standard unit.',p:-800},
+      {k:'sky',n:'Skylight',d:'Natural light from above — transforms how the interior feels.',p:1500},
+      {k:'led',n:'Full LED Lighting System',d:'Warm, dimmable throughout. Smart-ready.',p:0,lock:true},
+      {k:'br',n:'Antique Brass Hardware',d:'Toggle switches and fixtures throughout. Premium, not catalog.',p:0,lock:true},
+    ]
+  }
+};
+
+const fmt = n => n===0 ? 'Included' : (n<0?'-':'+')+'$'+Math.abs(n).toLocaleString();
+const fmtT = n => '$'+n.toLocaleString('en-US');
+
+function pickModel(k){
+  R.model=k; R.base=M[k].base; R.extras={}; R.cab=null; R.use=null;
+  document.getElementById('mc-kubo').classList.toggle('on',k==='kubo');
+  document.getElementById('mc-nook').classList.toggle('on',k==='nook');
+  document.getElementById('b1').disabled=false;
+  document.getElementById('bprice').textContent = k==='kubo' ? '+$800' : '+$3,000';
+  buildS3(); buildS4(); updSum();
+}
+
+function pickFin(k,p){
+  ['painted','stain','burned'].forEach(f=>document.getElementById('fin-'+f).classList.remove('on'));
+  document.getElementById('fin-'+k).classList.add('on');
+  R.fin=k; R.finP=p;
+  document.getElementById('b2').disabled=!R.color;
+  updSum();
+}
+
+function pickCol(el,name,hex){
+  document.querySelectorAll('.sw').forEach(s=>s.classList.remove('on'));
+  el.classList.add('on'); R.color=name; R.colorHex=hex;
+  document.getElementById('b2').disabled=false;
+  const cp=document.getElementById('sum-cp'); cp.style.background=hex; cp.style.display='block';
+  updSum();
+}
+
+function buildS3(){
+  if(!R.model) return;
+  const m=M[R.model];
+  document.getElementById('s3t').textContent=m.s3t;
+  const list=document.getElementById('s3list'); list.innerHTML='';
+  m.opts.forEach(o=>{
+    const d=document.createElement('div');
+    d.className='ti'+(o.lock?' on locked':''); d.id='ti-'+o.k;
+    const pr=o.lock ? `<span class="ti-inc">Included</span>` : `<div class="ck"></div>`;
+    d.innerHTML=`<div class="ti-info"><div class="ti-n">${o.n}</div><div class="ti-d">${o.d}</div></div><div class="ti-r">${pr}</div>`;
+    if(!o.lock) d.onclick=()=>togExt(d,o.k,o.n,o.p);
+    list.appendChild(d);
+  });
+}
+
+function buildS4(){
+  if(!R.model) return;
+  const m=M[R.model];
+  const t=document.getElementById('s4t'), s=document.getElementById('s4s'), c=document.getElementById('s4c');
+  if(!m.cab){
+    t.textContent='Almost done'; s.textContent='Skip to your use case';
+    c.innerHTML='<p style="font-size:0.82rem;color:var(--muted);line-height:1.8;">The Kubo includes LED lighting, power wiring, and your chosen exterior finish.</p>';
+  } else {
+    t.textContent='Cabinet Finish'; s.textContent='European style — two finishes, both look incredible';
+    c.innerHTML=`<div class="tl">
+      <div class="ti on" id="cab-w" onclick="pickCab('wood')"><div class="ti-info"><div class="ti-n">Wood Tone Cabinets</div><div class="ti-d">Warm natural wood finish — European frameless style. Pairs perfectly with plywood interior walls.</div></div><div class="ti-r"><span class="ti-inc">Included</span></div></div>
+      <div class="ti" id="cab-b" onclick="pickCab('black')"><div class="ti-info"><div class="ti-n">Black Cabinets</div><div class="ti-d">Matte black European frameless style. Dramatic and modern against the warm plywood walls.</div></div><div class="ti-r"><span class="ti-inc">Included</span></div></div>
+    </div>`;
+    R.cab='wood';
+  }
+}
+
+function togExt(el,k,n,p){
+  const on=el.classList.toggle('on');
+  if(on) R.extras[k]={label:n,price:p};
+  else delete R.extras[k];
+  updSum();
+}
+
+function pickCab(k){
+  R.cab=k;
+  document.getElementById('cab-w')?.classList.toggle('on',k==='wood');
+  document.getElementById('cab-b')?.classList.toggle('on',k==='black');
+  updSum();
+}
+
+function pickUse(el,u){
+  document.querySelectorAll('.uc').forEach(c=>c.classList.remove('on'));
+  el.classList.add('on'); R.use=u;
+  document.getElementById('b5').disabled=false;
+  updSum();
+}
+
+function updSum(){
+  const m=R.model?M[R.model]:null;
+  document.getElementById('sum-ph').style.display=m?'none':'flex';
+  document.getElementById('sum-img').style.display=m?'block':'none';
+  document.getElementById('sum-mn').style.display=m?'block':'none';
+  document.getElementById('sum-ms').style.display=m?'block':'none';
+  if(m){ document.getElementById('sum-img').src=m.img; document.getElementById('sum-mn').textContent=m.name; document.getElementById('sum-ms').textContent=m.size; }
+
+  const rows=document.getElementById('sum-rows'); rows.innerHTML='';
+  if(m){ addRow(rows,'Model',m.name,''); }
+  const fnames={painted:'Painted',stain:'Stain',burned:'Burned Wood'};
+  if(R.fin&&m){ addRow(rows,'Exterior',fnames[R.fin],''); }
+  if(R.color) addRow(rows,'Color',R.color,'');
+  Object.values(R.extras).forEach(e=>{ addRow(rows,e.label,'',''); });
+  if(R.cab) addRow(rows,'Cabinets',R.cab==='black'?'Black':'Wood Tone','');
+  if(R.use) addRow(rows,'Use Case',R.use,'');
+
+  document.getElementById('bq').classList.toggle('off',!m);
+}
+
+function addRow(c,l,v,p){
+  const d=document.createElement('div'); d.className='sr';
+  d.innerHTML=`<span class="sr-l">${l}</span>${v?`<span class="sr-v">${v}</span>`:''}<span class="sr-p">${p}</span>`;
+  c.appendChild(d);
+}
+
+function go(n){
+  for(let i=1;i<=5;i++){
+    document.getElementById('s'+i).classList.toggle('on',i===n);
+    const p=document.getElementById('ps'+i);
+    p.classList.remove('active','done');
+    if(i<n) p.classList.add('done');
+    else if(i===n) p.classList.add('active');
+  }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function done(){ window.location.href='/#contact'; }
+
+pickFin('painted',0);
+</script>
+</body>
+</html>
