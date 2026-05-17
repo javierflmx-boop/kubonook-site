@@ -50,13 +50,13 @@
 
   /* MODEL CARDS */
   .mg { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .mc { border: 1px solid var(--border); background: var(--surface); cursor: pointer; transition: all 0.25s; position: relative; overflow: hidden; }
+  .mc { border: 1px solid var(--border); background: var(--surface); cursor: pointer; transition: all 0.25s; position: relative; overflow: hidden; user-select: none; -webkit-tap-highlight-color: transparent; }
   .mc:hover { border-color: var(--border-h); background: var(--surface2); }
   .mc.on { border-color: var(--gold); background: var(--surface2); }
   .mc.on::after { content: '✓'; position: absolute; top: 14px; right: 16px; color: var(--gold); font-size: 0.85rem; }
-  .mc img { width: 100%; height: 160px; object-fit: cover; display: block; filter: brightness(0.8); transition: filter 0.3s; }
+  .mc img { width: 100%; height: 160px; object-fit: cover; display: block; filter: brightness(0.8); transition: filter 0.3s; pointer-events: none; }
   .mc:hover img, .mc.on img { filter: brightness(1); }
-  .mc-b { padding: 18px 20px 22px; }
+  .mc-b { padding: 18px 20px 22px; pointer-events: none; }
   .mc-n { font-family: var(--fd); font-size: 1.5rem; font-weight: 300; margin-bottom: 2px; }
   .mc-sz { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
   .mc-d { font-size: 0.75rem; color: var(--muted); line-height: 1.6; margin-bottom: 12px; }
@@ -318,11 +318,13 @@ const fmt = n => n===0 ? 'Included' : (n<0?'-':'+')+'$'+Math.abs(n).toLocaleStri
 const fmtT = n => '$'+n.toLocaleString('en-US');
 
 function pickModel(k){
+  if(!M[k]) return;
   R.model=k; R.base=M[k].base; R.extras={}; R.cab=null; R.metal=null; R.floor='Surprise Me'; R.door='Natural Wood'; R.doorGlass='none'; R.doorGlassPrice=0; R.use=null;
   document.getElementById('mc-kubo').classList.toggle('on',k==='kubo');
   document.getElementById('mc-nook').classList.toggle('on',k==='nook');
   document.getElementById('b1').disabled=false;
-  document.getElementById('bprice').textContent = k==='kubo' ? '+$800' : '+$3,000';
+  const bp = document.getElementById('bprice');
+  if(bp) bp.textContent = k==='kubo' ? '+$800' : '+$3,000';
   buildS3(); buildS4(); updSum();
 }
 
@@ -458,7 +460,7 @@ function buildS4(){
         <div class="fn" style="text-align:left;font-size:0.85rem;">Stainless</div>
         <div class="fi">Clean · Timeless</div>
       </div>
-    </div>`;
+    </div>
     <p class="sec-lbl">Flooring</p>
     <p style="font-size:0.72rem;color:var(--muted);margin-bottom:14px;line-height:1.7;">Javier selects only floors that work. Every option looks exactly how it should inside a Nook.</p>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:6px;">
@@ -498,10 +500,11 @@ function buildS4(){
         <div style="width:52px;height:44px;border-radius:2px;flex-shrink:0;background:linear-gradient(135deg,#C9A46E 0%,#7d8c72 25%,#1a1a1a 50%,#e8e4de 75%,#2C1F14 100%);"></div>
         <div>
           <div class="fn" style="font-size:0.88rem;">Surprise Me</div>
-          <div class="fi" style="margin-top:3px;">Javier picks what works best for your space and configuration. Trust the process.</div>
+          <div class="fi" style="margin-top:3px;">Javier picks what works best for your space. Trust the process.</div>
         </div>
       </div>
-    </div>
+    </div>`;
+    R.cab='wood';
   }
 }
 
@@ -550,6 +553,8 @@ function pickFloor(k){
   document.getElementById('floor-'+id)?.classList.add('on');
   updSum();
 }
+
+function pickUse(el,u){
   document.querySelectorAll('.uc').forEach(c=>c.classList.remove('on'));
   el.classList.add('on'); R.use=u;
   document.getElementById('b5').disabled=false;
