@@ -284,7 +284,7 @@
 </div>
 
 <script>
-const R = { model:null, base:0, fin:'painted', finP:0, color:null, colorHex:null, extras:{}, cab:null, use:null };
+const R = { model:null, base:0, fin:'painted', finP:0, color:null, colorHex:null, extras:{}, cab:null, metal:null, floor:'Surprise Me', door:'Natural Wood', doorGlass:'none', doorGlassPrice:0, use:null };
 
 const M = {
   kubo:{ name:'Kubo', size:'8 × 8 ft · Garden Pod', base:13000,
@@ -303,7 +303,6 @@ const M = {
     s3t:'Doors, Walls & Add-ons', cab:true,
     opts:[
       {k:'pd',n:'Custom Handcrafted Pivot Door',d:'Built by our founder. One of a kind — not from any store.',p:0,lock:true},
-      {k:'pdg',n:'Pivot Door + Glass Panel',d:'Add glass to your pivot door — light, character, and drama.',p:900},
       {k:'mw',n:'Metal Cascade Accent Wall',d:'Corrugated metal exterior wall — industrial meets architecture.',p:2500},
       {k:'kit',n:'Modern Mini Kitchen',d:'Induction cooktop, sink, wood uppers, LED under-cabinet lighting.',p:0,lock:true},
       {k:'st',n:'Smart Toilet',d:'Modern smart toilet — the kind guests photograph.',p:0,lock:true},
@@ -319,7 +318,7 @@ const fmt = n => n===0 ? 'Included' : (n<0?'-':'+')+'$'+Math.abs(n).toLocaleStri
 const fmtT = n => '$'+n.toLocaleString('en-US');
 
 function pickModel(k){
-  R.model=k; R.base=M[k].base; R.extras={}; R.cab=null; R.use=null;
+  R.model=k; R.base=M[k].base; R.extras={}; R.cab=null; R.metal=null; R.floor='Surprise Me'; R.door='Natural Wood'; R.doorGlass='none'; R.doorGlassPrice=0; R.use=null;
   document.getElementById('mc-kubo').classList.toggle('on',k==='kubo');
   document.getElementById('mc-nook').classList.toggle('on',k==='nook');
   document.getElementById('b1').disabled=false;
@@ -356,6 +355,59 @@ function buildS3(){
     if(!o.lock) d.onclick=()=>togExt(d,o.k,o.n,o.p);
     list.appendChild(d);
   });
+
+  // Door finish + glass — Nook only
+  if(R.model==='nook'){
+    const doorSection = document.createElement('div');
+    doorSection.innerHTML=`
+    <p class="sec-lbl" style="margin-top:28px;">Pivot Door Finish</p>
+    <p style="font-size:0.72rem;color:var(--muted);margin-bottom:12px;line-height:1.7;">The texture and color of your handcrafted pivot door. Changes the entire personality of your Nook.</p>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:6px;">
+      <div class="fc on" id="door-natural" onclick="pickDoor('Natural Wood')" style="text-align:left;padding:16px 14px;">
+        <div style="width:100%;height:40px;background:linear-gradient(135deg,#C4956A,#8B6F47);border-radius:2px;margin-bottom:10px;"></div>
+        <div class="fn" style="text-align:left;font-size:0.82rem;">Natural Wood</div>
+        <div class="fi">Warm · Organic</div>
+      </div>
+      <div class="fc" id="door-burned" onclick="pickDoor('Burned Wood')" style="text-align:left;padding:16px 14px;">
+        <div style="width:100%;height:40px;background:linear-gradient(135deg,#1a1a18,#2d2d2a);background-image:repeating-linear-gradient(90deg,rgba(255,255,255,0.03) 0,rgba(255,255,255,0.03) 2px,transparent 2px,transparent 10px);border-radius:2px;margin-bottom:10px;"></div>
+        <div class="fn" style="text-align:left;font-size:0.82rem;">Burned Wood</div>
+        <div class="fi">Dark · Dramatic</div>
+      </div>
+      <div class="fc" id="door-painted" onclick="pickDoor('Painted')" style="text-align:left;padding:16px 14px;">
+        <div style="width:100%;height:40px;background:var(--surface);border:1px solid var(--border);border-radius:2px;margin-bottom:10px;display:flex;align-items:center;justify-content:center;">
+          <span style="font-size:0.6rem;letter-spacing:0.2em;color:var(--muted);">YOUR PALETTE COLOR</span>
+        </div>
+        <div class="fn" style="text-align:left;font-size:0.82rem;">Painted</div>
+        <div class="fi">Matches your color</div>
+      </div>
+      <div class="fc" id="door-black" onclick="pickDoor('Matte Black')" style="text-align:left;padding:16px 14px;">
+        <div style="width:100%;height:40px;background:#080808;border-radius:2px;margin-bottom:10px;"></div>
+        <div class="fn" style="text-align:left;font-size:0.82rem;">Matte Black</div>
+        <div class="fi">Bold · Statement</div>
+      </div>
+    </div>
+
+    <p class="sec-lbl" style="margin-top:24px;">Door Glass</p>
+    <p style="font-size:0.72rem;color:var(--muted);margin-bottom:12px;line-height:1.7;">Glass changes how light moves through your space and how the door reads from the street.</p>
+    <div class="tl">
+      <div class="ti on" id="glass-none" onclick="pickDoorGlass('none',0)">
+        <div style="width:32px;height:44px;background:var(--surface);border:1px solid var(--border);border-radius:2px;flex-shrink:0;"></div>
+        <div class="ti-info" style="margin-left:14px;"><div class="ti-n">No Glass</div><div class="ti-d">Solid door — full privacy, maximum drama. The pure pivot door statement.</div></div>
+        <div class="ti-r"><span class="ti-inc">Included</span></div>
+      </div>
+      <div class="ti" id="glass-half" onclick="pickDoorGlass('half',650)">
+        <div style="width:32px;height:44px;background:linear-gradient(to top,var(--surface) 50%,rgba(200,220,240,0.25) 50%);border:1px solid var(--border);border-radius:2px;flex-shrink:0;"></div>
+        <div class="ti-info" style="margin-left:14px;"><div class="ti-n">Half Glass — Frosted Top</div><div class="ti-d">Frosted glass on the upper half. Natural light in, full privacy below. Boutique hotel feeling.</div></div>
+        <div class="ti-r"><span class="ti-p">+$650</span><div class="ck"></div></div>
+      </div>
+      <div class="ti" id="glass-full" onclick="pickDoorGlass('full',900)">
+        <div style="width:32px;height:44px;background:rgba(200,220,240,0.2);border:1px solid rgba(200,220,240,0.3);border-radius:2px;flex-shrink:0;"></div>
+        <div class="ti-info" style="margin-left:14px;"><div class="ti-n">Full Glass Panel</div><div class="ti-d">Floor-to-ceiling glass — transparent, open, architectural. The kind you photograph.</div></div>
+        <div class="ti-r"><span class="ti-p">+$900</span><div class="ck"></div></div>
+      </div>
+    </div>`;
+    list.appendChild(doorSection);
+  }
 }
 
 function buildS4(){
@@ -366,12 +418,90 @@ function buildS4(){
     t.textContent='Almost done'; s.textContent='Skip to your use case';
     c.innerHTML='<p style="font-size:0.82rem;color:var(--muted);line-height:1.8;">The Kubo includes LED lighting, power wiring, and your chosen exterior finish.</p>';
   } else {
-    t.textContent='Cabinet Finish'; s.textContent='European style — two finishes, both look incredible';
-    c.innerHTML=`<div class="tl">
-      <div class="ti on" id="cab-w" onclick="pickCab('wood')"><div class="ti-info"><div class="ti-n">Wood Tone Cabinets</div><div class="ti-d">Warm natural wood finish — European frameless style. Pairs perfectly with plywood interior walls.</div></div><div class="ti-r"><span class="ti-inc">Included</span></div></div>
-      <div class="ti" id="cab-b" onclick="pickCab('black')"><div class="ti-info"><div class="ti-n">Black Cabinets</div><div class="ti-d">Matte black European frameless style. Dramatic and modern against the warm plywood walls.</div></div><div class="ti-r"><span class="ti-inc">Included</span></div></div>
+    t.textContent='Cabinets & Metal Finish'; s.textContent='Every detail matches — you choose how';
+    c.innerHTML=`
+    <p class="sec-lbl" style="margin-top:0;">Cabinet Finish</p>
+    <p style="font-size:0.72rem;color:var(--muted);margin-bottom:14px;line-height:1.7;">European frameless style — three finishes. All look exactly how they should.</p>
+    <div class="tl">
+      <div class="ti on" id="cab-w" onclick="pickCab('wood')">
+        <div style="width:32px;height:32px;background:linear-gradient(135deg,#8B6F47,#C4956A);border-radius:2px;flex-shrink:0;"></div>
+        <div class="ti-info" style="margin-left:14px;"><div class="ti-n">Natural Wood</div><div class="ti-d">Warm wood grain. European frameless. Pairs perfectly with the plywood walls and LED lighting.</div></div>
+        <div class="ti-r"><span class="ti-inc">Included</span></div>
+      </div>
+      <div class="ti" id="cab-wh" onclick="pickCab('white')">
+        <div style="width:32px;height:32px;background:linear-gradient(135deg,#f0ebe3,#e0dbd3);border-radius:2px;border:1px solid rgba(255,255,255,0.08);flex-shrink:0;"></div>
+        <div class="ti-info" style="margin-left:14px;"><div class="ti-n">White</div><div class="ti-d">Clean matte white. European frameless. Bright and minimal against the warm plywood walls.</div></div>
+        <div class="ti-r"><span class="ti-inc">Included</span></div>
+      </div>
+      <div class="ti" id="cab-b" onclick="pickCab('black')">
+        <div style="width:32px;height:32px;background:linear-gradient(135deg,#1a1a1a,#2d2d2d);border-radius:2px;flex-shrink:0;"></div>
+        <div class="ti-info" style="margin-left:14px;"><div class="ti-n">Black</div><div class="ti-d">Matte black European frameless. Dramatic and modern against the warm plywood walls.</div></div>
+        <div class="ti-r"><span class="ti-inc">Included</span></div>
+      </div>
+    </div>
+
+    <p class="sec-lbl">Metal Finish Throughout</p>
+    <p style="font-size:0.72rem;color:var(--muted);margin-bottom:14px;line-height:1.7;">One finish applied to every metal detail in your Nook — door handles, faucets, light fixtures, cabinet pulls, switches. Everything matches.</p>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+      <div class="fc" id="metal-black" onclick="pickMetal('Matte Black')" style="text-align:left;padding:18px 16px;">
+        <div style="width:100%;height:44px;background:linear-gradient(135deg,#1a1a1a,#2d2d2d);border-radius:2px;margin-bottom:12px;"></div>
+        <div class="fn" style="text-align:left;font-size:0.85rem;">Matte Black</div>
+        <div class="fi">Bold · Modern</div>
+      </div>
+      <div class="fc" id="metal-gold" onclick="pickMetal('Gold / Brass')" style="text-align:left;padding:18px 16px;">
+        <div style="width:100%;height:44px;background:linear-gradient(135deg,#C9A46E,#E2C49A);border-radius:2px;margin-bottom:12px;"></div>
+        <div class="fn" style="text-align:left;font-size:0.85rem;">Gold / Brass</div>
+        <div class="fi">Warm · Luxurious</div>
+      </div>
+      <div class="fc" id="metal-steel" onclick="pickMetal('Stainless')" style="text-align:left;padding:18px 16px;">
+        <div style="width:100%;height:44px;background:linear-gradient(135deg,#9a9a9a,#c8c8c8);border-radius:2px;margin-bottom:12px;"></div>
+        <div class="fn" style="text-align:left;font-size:0.85rem;">Stainless</div>
+        <div class="fi">Clean · Timeless</div>
+      </div>
     </div>`;
-    R.cab='wood';
+    <p class="sec-lbl">Flooring</p>
+    <p style="font-size:0.72rem;color:var(--muted);margin-bottom:14px;line-height:1.7;">Javier selects only floors that work. Every option looks exactly how it should inside a Nook.</p>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:6px;">
+      <div class="fc" id="floor-natural" onclick="pickFloor('Natural Wood')" style="text-align:left;padding:16px 14px;">
+        <div style="width:100%;height:50px;background:repeating-linear-gradient(90deg,#C4956A 0px,#C4956A 18px,#B8855A 18px,#B8855A 20px,#C4956A 20px);border-radius:2px;margin-bottom:10px;opacity:0.9;"></div>
+        <div class="fn" style="text-align:left;font-size:0.82rem;">Natural Wood</div>
+        <div class="fi">Warm · Organic</div>
+      </div>
+      <div class="fc" id="floor-dark" onclick="pickFloor('Dark Wood')" style="text-align:left;padding:16px 14px;">
+        <div style="width:100%;height:50px;background:repeating-linear-gradient(90deg,#2C1F14 0px,#2C1F14 18px,#241A10 18px,#241A10 20px,#2C1F14 20px);border-radius:2px;margin-bottom:10px;"></div>
+        <div class="fn" style="text-align:left;font-size:0.82rem;">Dark Wood</div>
+        <div class="fi">Rich · Dramatic</div>
+      </div>
+      <div class="fc" id="floor-gray" onclick="pickFloor('Gray Wood')" style="text-align:left;padding:16px 14px;">
+        <div style="width:100%;height:50px;background:repeating-linear-gradient(90deg,#7A7A7A 0px,#7A7A7A 18px,#6E6E6E 18px,#6E6E6E 20px,#7A7A7A 20px);border-radius:2px;margin-bottom:10px;"></div>
+        <div class="fn" style="text-align:left;font-size:0.82rem;">Gray Wood</div>
+        <div class="fi">Modern · Cool</div>
+      </div>
+      <div class="fc" id="floor-white-tile" onclick="pickFloor('White Tile')" style="text-align:left;padding:16px 14px;">
+        <div style="width:100%;height:50px;background:repeating-linear-gradient(90deg,#e8e4de 0px,#e8e4de 23px,#d4d0ca 23px,#d4d0ca 25px,#e8e4de 25px);border-radius:2px;margin-bottom:10px;border:1px solid rgba(255,255,255,0.05);"></div>
+        <div class="fn" style="text-align:left;font-size:0.82rem;">White Tile</div>
+        <div class="fi">Clean · Minimal</div>
+      </div>
+      <div class="fc" id="floor-black-tile" onclick="pickFloor('Black Tile')" style="text-align:left;padding:16px 14px;">
+        <div style="width:100%;height:50px;background:repeating-linear-gradient(90deg,#1a1a1a 0px,#1a1a1a 23px,#111 23px,#111 25px,#1a1a1a 25px);border-radius:2px;margin-bottom:10px;"></div>
+        <div class="fn" style="text-align:left;font-size:0.82rem;">Black Tile</div>
+        <div class="fi">Bold · Sleek</div>
+      </div>
+      <div class="fc" id="floor-gray-tile" onclick="pickFloor('Gray Tile')" style="text-align:left;padding:16px 14px;">
+        <div style="width:100%;height:50px;background:repeating-linear-gradient(90deg,#5a5a5a 0px,#5a5a5a 23px,#4a4a4a 23px,#4a4a4a 25px,#5a5a5a 25px);border-radius:2px;margin-bottom:10px;"></div>
+        <div class="fn" style="text-align:left;font-size:0.82rem;">Gray Tile</div>
+        <div class="fi">Versatile · Sharp</div>
+      </div>
+    </div>
+    <div style="margin-top:10px;">
+      <div class="fc on" id="floor-surprise" onclick="pickFloor('Surprise Me')" style="text-align:left;padding:16px 18px;display:flex;align-items:center;gap:16px;">
+        <div style="width:52px;height:44px;border-radius:2px;flex-shrink:0;background:linear-gradient(135deg,#C9A46E 0%,#7d8c72 25%,#1a1a1a 50%,#e8e4de 75%,#2C1F14 100%);"></div>
+        <div>
+          <div class="fn" style="font-size:0.88rem;">Surprise Me</div>
+          <div class="fi" style="margin-top:3px;">Javier picks what works best for your space and configuration. Trust the process.</div>
+        </div>
+      </div>
+    </div>
   }
 }
 
@@ -385,11 +515,41 @@ function togExt(el,k,n,p){
 function pickCab(k){
   R.cab=k;
   document.getElementById('cab-w')?.classList.toggle('on',k==='wood');
+  document.getElementById('cab-wh')?.classList.toggle('on',k==='white');
   document.getElementById('cab-b')?.classList.toggle('on',k==='black');
   updSum();
 }
 
-function pickUse(el,u){
+function pickMetal(k){
+  R.metal=k;
+  ['black','gold','steel'].forEach(m=>document.getElementById('metal-'+m)?.classList.remove('on'));
+  const id = k==='Matte Black'?'black':k==='Gold / Brass'?'gold':'steel';
+  document.getElementById('metal-'+id)?.classList.add('on');
+  updSum();
+}
+
+function pickDoor(k){
+  R.door=k;
+  ['natural','burned','painted','black'].forEach(d=>document.getElementById('door-'+d)?.classList.remove('on'));
+  const id=k==='Natural Wood'?'natural':k==='Burned Wood'?'burned':k==='Painted'?'painted':'black';
+  document.getElementById('door-'+id)?.classList.add('on');
+  updSum();
+}
+
+function pickDoorGlass(k,price){
+  R.doorGlass=k; R.doorGlassPrice=price;
+  ['none','half','full'].forEach(g=>document.getElementById('glass-'+g)?.classList.remove('on'));
+  document.getElementById('glass-'+k)?.classList.add('on');
+  updSum();
+}
+
+function pickFloor(k){
+  R.floor=k;
+  ['natural','dark','gray','white-tile','black-tile','gray-tile','surprise'].forEach(f=>document.getElementById('floor-'+f)?.classList.remove('on'));
+  const id = k==='Natural Wood'?'natural':k==='Dark Wood'?'dark':k==='Gray Wood'?'gray':k==='White Tile'?'white-tile':k==='Black Tile'?'black-tile':k==='Gray Tile'?'gray-tile':'surprise';
+  document.getElementById('floor-'+id)?.classList.add('on');
+  updSum();
+}
   document.querySelectorAll('.uc').forEach(c=>c.classList.remove('on'));
   el.classList.add('on'); R.use=u;
   document.getElementById('b5').disabled=false;
@@ -410,7 +570,10 @@ function updSum(){
   if(R.fin&&m){ addRow(rows,'Exterior',fnames[R.fin],''); }
   if(R.color) addRow(rows,'Color',R.color,'');
   Object.values(R.extras).forEach(e=>{ addRow(rows,e.label,'',''); });
-  if(R.cab) addRow(rows,'Cabinets',R.cab==='black'?'Black':'Wood Tone','');
+  if(R.model==='nook') addRow(rows,'Pivot Door Finish',R.door,'');
+  if(R.model==='nook'&&R.doorGlass!=='none') addRow(rows,'Door Glass',R.doorGlass==='half'?'Half Glass Frosted':'Full Glass Panel','+$'+R.doorGlassPrice.toLocaleString());
+  if(R.metal) addRow(rows,'Metal Finish',R.metal,'');
+  if(R.floor) addRow(rows,'Flooring',R.floor,'');
   if(R.use) addRow(rows,'Use Case',R.use,'');
 
   document.getElementById('bq').classList.toggle('off',!m);
